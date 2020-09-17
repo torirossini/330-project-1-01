@@ -47,7 +47,7 @@
     </style>
 	<script>
         "use strict";
-        const canvasWidth = 400, canvasHeight = 300;
+        const canvasWidth = 600, canvasHeight = 500;
         let ctx;
         
         let slider, output;
@@ -56,6 +56,8 @@
 
         let colorStyle = "green";
         let backgroundColor = "black";
+        
+        let fps = 120;
         
         window.onload = init;
         
@@ -75,7 +77,7 @@
             document.querySelector("#chooserBackgroundColor").onchange = function(e){
                 backgroundColor = this.value;
                 updateBackground(backgroundColor);
-                console.log("changed background to " + colorStyle);
+                console.log("changed background to " + backgroundColor);
             };
             
             document.querySelector("#chooserColorStyle").onchange = function(e){
@@ -90,7 +92,7 @@
                 
               }, false);
             
-            //loop();
+            loop();
             canvas.onclick = canvasClicked;
 		}
 
@@ -103,7 +105,7 @@
             
             //Add canvas click logic here
             
-            //flowers.push(new Botany(mouseX, mouseY, 0,120,5,0,colorStyle).loop());
+            flowers.push(new Botany(mouseX, mouseY, 10));
             
             
         }
@@ -125,18 +127,12 @@
           }
 
         class Botany{
-            constructor(x,y,counter=0,fps=120, divergence=5, n=0, c=4, color="green"){
-                    this.x = x;
-                    this.y = y;
-                    this.counter = counter;
-                    this.fps = fps;
-                    this.divergence = divergence;
-                    this.n = n;
-                    this.c = c;
-                    this.color = color;
-                    this.dtr = this.dtr.bind(this);
-                    this.drawCircle = this.drawCircle.bind(this);
-                    this.getColorAlgorithm = this.getColorAlgorithm.bind(this);
+            constructor(x,y,maxInterations = 10){
+                this.x = Number(x);
+                this.y = Number(y);
+                this.maxInterations = Number(maxInterations);
+                this.n = 0;
+                this.fps = 120;
             }
         
             getColorAlgorithm(){
@@ -151,48 +147,32 @@
                     }
             }
             
-            dtr(degrees){
-                return degrees * (Math.PI/180);
-            }
-
-            drawCircle(ctx,x,y,radius,color){
-                ctx.save();
-                ctx.fillStyle = color;
-                ctx.beginPath();
-                ctx.arc(x,y,radius,0,Math.PI * 2);
-                ctx.closePath();
-                ctx.fill();
-                ctx.restore();
-            }  
-            
-            loop(){
-                // each frame draw a new dot
-                // `a` is the angle
-                // `r` is the radius from the center (e.g. "Pole") of the flower
-                // `c` is the "padding/spacing" between the dots
-                let a = this.n * this.dtr(this.divergence);
-                let r = this.c * Math.sqrt(this.n);
-                //console.log(a,r);
-                
-                // now calculate the `x` and `y`
-                let x = r * Math.cos(a) + this.x;
-                let y = r * Math.sin(a) + this.y;
-        
-                let color = this.getColorAlgorithm();
-                this.drawCircle(ctx,x,y,2,color);
-
-
-                setTimeout(this.loop,1000/this.fps);
+            drawBotany()
+            {
+                console.log("print " + this.n);
                 this.n++;
             }
 
-
     }
+        
+        function loop(){
+
+            for(var i = 0; i < flowers.length-1; i++)
+                {
+                    if (flowers[i].n < flowers[i].maxInterations)
+                        {
+                            flowers[i].drawBotany();
+                        }
+                }
+            
+            setTimeout(loop, 1000/fps);      
+        }
+
 
 	</script>
 </head>
 <body>
-    <h1>Phyllotaxis Pencil </h1>
+    <h1>Phyllotaxis Stamp </h1>
     <section>
         <button id="clearButton">Clear</button> 
         
