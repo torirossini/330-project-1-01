@@ -45,6 +45,7 @@
       cursor: pointer; /* Cursor on hover */
     }
     </style>
+    <script src="src/abcLIB.js"></script>
 	<script>
         "use strict";
         const canvasWidth = 600, canvasHeight = 500;
@@ -105,7 +106,7 @@
             
             //Add canvas click logic here
             
-            flowers.push(new Botany(mouseX, mouseY, 10));
+            flowers.push(new Botany(mouseX, mouseY, 10, colorStyle));
             
             
         }
@@ -127,12 +128,17 @@
           }
 
         class Botany{
-            constructor(x,y,maxInterations = 10){
+            constructor(x,y,maxInterations = 10, color = "green", fps = 120, divergence = 5, c = 4){
                 this.x = Number(x);
                 this.y = Number(y);
+                this.color = color;
                 this.maxInterations = Number(maxInterations);
                 this.n = 0;
-                this.fps = 120;
+                this.fps = fps;
+                
+                this.counter = 0; //angle
+                this.divergence = divergence;
+                this.c = c;
             }
         
             getColorAlgorithm(){
@@ -149,6 +155,21 @@
             
             drawBotany()
             {
+                
+                let a = this.n * abcLIB.dtr(this.divergence);
+                let r = this.c * Math.sqrt(this.n);
+                //console.log(a,r);
+                // now calculate the `x` and `y`
+                let x = r * Math.cos(a) + this.x;
+                let y = r * Math.sin(a) + this.y;
+                //console.log(x,y);
+
+                //drawCircle(ctx,x,y,2,"white");
+                //let color = `rgb(${n % 256},0,255)`;
+
+                let color = this.getColorAlgorithm();
+                abcLIB.drawCircle(ctx,this.x,this.y,2,color);
+                
                 console.log("print " + this.n);
                 this.n++;
             }
@@ -157,7 +178,7 @@
         
         function loop(){
 
-            for(var i = 0; i < flowers.length-1; i++)
+            for(var i = 0; i < flowers.length; i++)
                 {
                     if (flowers[i].n < flowers[i].maxInterations)
                         {
