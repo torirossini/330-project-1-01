@@ -55,6 +55,7 @@
         let flowers=[];
 
         let colorStyle = "green";
+        let backgroundColor = "black";
         
         window.onload = init;
         
@@ -70,6 +71,12 @@
             slider.oninput = function() {
                       output.innerHTML = this.value;
             }
+            
+            document.querySelector("#chooserBackgroundColor").onchange = function(e){
+                backgroundColor = this.value;
+                updateBackground(backgroundColor);
+                console.log("changed background to " + colorStyle);
+            };
             
             document.querySelector("#chooserColorStyle").onchange = function(e){
                 colorStyle = this.value;
@@ -96,9 +103,17 @@
             
             //Add canvas click logic here
             
-            flowers.push(new Botany(mouseX, mouseY, 0,120,5,0,colorStyle).loop());
+            //flowers.push(new Botany(mouseX, mouseY, 0,120,5,0,colorStyle).loop());
             
             
+        }
+        
+        function updateBackground(color)
+        {
+            ctx.save();
+            ctx.fillStyle = color;
+            ctx.fillRect(0,0,canvasWidth,canvasHeight);
+            ctx.restore();
         }
         
         function getMousePos(canvas, evt) {
@@ -193,9 +208,9 @@
     </div>
     <div class="presets">
     <label>Background Color: 
-      <select id="chooserStrokeStyle"> 
+      <select id="chooserBackgroundColor"> 
         <option value="red">Red</option>
-        <option value="green" selected>Green</option>
+        <option value="black" selected>Black</option>
         <option value="blue">Blue</option>
       </select>
     </label>
