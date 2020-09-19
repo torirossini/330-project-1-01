@@ -51,7 +51,7 @@
         const canvasWidth = 600, canvasHeight = 500;
         let ctx;
         
-        let slider, output;
+        let maxIterationSlider, maxIterationOutput;
         
         let flowers=[];
 
@@ -59,6 +59,7 @@
         let backgroundColor = "black";
         
         let fps = 120;
+        let maxIterations;
         
         window.onload = init;
         
@@ -66,13 +67,17 @@
             ctx = canvas.getContext("2d");
             canvas.width = canvasWidth;
             canvas.height = canvasHeight;
-            ctx.fillRect(0,0,canvasWidth,canvasHeight);
-            slider = document.getElementById("myRange");
-            output = document.getElementById("demo");
-            output.innerHTML = slider.value;
             
-            slider.oninput = function() {
-                      output.innerHTML = this.value;
+            ctx.fillRect(0,0,canvasWidth,canvasHeight);
+            
+            
+            maxIterationSlider = document.querySelector("#maxIterationRange");
+            maxIterationOutput = document.querySelector("#maxIterations");
+            maxIterationOutput.innerHTML = maxIterationSlider.value;
+            
+            maxIterationSlider.oninput = function() {
+                maxIterationOutput.innerHTML = this.value;
+                maxIterations = this.value;
             }
             
             document.querySelector("#chooserBackgroundColor").onchange = function(e){
@@ -106,7 +111,7 @@
             
             //Add canvas click logic here
             
-            flowers.push(new Botany(mouseX, mouseY, 10, colorStyle));
+            flowers.push(new Botany(mouseX, mouseY, maxIterations, colorStyle));
             
             
         }
@@ -128,7 +133,7 @@
           }
 
         class Botany{
-            constructor(x,y,maxInterations = 10, color = "green", fps = 120, divergence = 5, c = 4){
+            constructor(x,y,maxInterations = 100, color = "green", fps = 120, divergence = 5, c = 4){
                 this.x = Number(x);
                 this.y = Number(y);
                 this.color = color;
@@ -168,7 +173,7 @@
                 //let color = `rgb(${n % 256},0,255)`;
 
                 let color = this.getColorAlgorithm();
-                abcLIB.drawCircle(ctx,this.x,this.y,2,color);
+                abcLIB.drawCircle(ctx,x,y,2,color);
                 
                 console.log("print " + this.n);
                 this.n++;
@@ -204,8 +209,8 @@
     <canvas id="canvas"></canvas>
     <div class="sliders">
        <div class="slidecontainer">
-          <input type="range" min="1" max="100" value="50" class="slider" id="myRange">
-          <p>Value: <span id="demo"></span></p>
+          <input type="range" min="1" max="1000" value="50" class="slider" id="maxIterationRange">
+          <p>Max Iterations: <span id="maxIterations"></span></p>
         </div>
 
     </div>
