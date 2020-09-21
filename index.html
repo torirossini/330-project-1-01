@@ -4,54 +4,14 @@
 <head>
 	<meta charset="utf-8" />
 	<title>Botany</title>
-	<style>canvas{ border: 1px solid black; }
-    
-    .slidecontainer {
-      width: 100%; /* Width of the outside container */
-    }
-
-    /* The slider itself */
-    .slider {
-      -webkit-appearance: none;  /* Override default CSS styles */
-      appearance: none;
-      width: 20%; /* Full-width */
-      height: 25px; /* Specified height */
-      background: #d3d3d3; /* Grey background */
-      outline: none; /* Remove outline */
-      opacity: 0.7; /* Set transparency (for mouse-over effects on hover) */
-      -webkit-transition: .2s; /* 0.2 seconds transition on hover */
-      transition: opacity .2s;
-    }
-
-    /* Mouse-over effects */
-    .slider:hover {
-      opacity: 1; /* Fully shown on mouse-over */
-    }
-
-    /* The slider handle (use -webkit- (Chrome, Opera, Safari, Edge) and -moz- (Firefox) to override default look) */
-    .slider::-webkit-slider-thumb {
-      -webkit-appearance: none; /* Override default look */
-      appearance: none;
-      width: 25px; /* Set a specific slider handle width */
-      height: 25px; /* Slider handle height */
-      background: #4CAF50; /* Green background */
-      cursor: pointer; /* Cursor on hover */
-    }
-
-    .slider::-moz-range-thumb {
-      width: 25px; /* Set a specific slider handle width */
-      height: 25px; /* Slider handle height */
-      background: #4CAF50; /* Green background */
-      cursor: pointer; /* Cursor on hover */
-    }
-    </style>
+    <link rel="stylesheet" href="styles/default-styles.css">
     <script src="src/abcLIB.js"></script>
 	<script>
         "use strict";
         const canvasWidth = 600, canvasHeight = 500;
         let ctx;
         
-        let maxIterationSlider, maxIterationOutput;
+        let maxIterationSlider, maxIterationOutput, divergenceSlider, divergenceOutput, cSlider, cOutput, fpsSlider, fpsOutput;
         
         let flowers=[];
 
@@ -59,7 +19,7 @@
         let backgroundColor = "black";
         
         let fps = 120;
-        let maxIterations;
+        let maxIterations, divergence, c;
         
         window.onload = init;
         
@@ -78,6 +38,30 @@
             maxIterationSlider.oninput = function() {
                 maxIterationOutput.innerHTML = this.value;
                 maxIterations = this.value;
+            }
+            
+            divergenceSlider = document.querySelector("#divergenceRange");
+            divergenceOutput = document.querySelector("#divergence");
+            divergenceOutput.innerHTML = divergenceSlider.value;
+            divergenceSlider.oninput = function() {
+                divergenceOutput.innerHTML = this.value;
+                divergence = this.value;
+            }
+            
+            cSlider = document.querySelector("#cRange");
+            cOutput = document.querySelector("#c");
+            cOutput.innerHTML = cSlider.value;
+            cSlider.oninput = function() {
+                cOutput.innerHTML = this.value;
+                c = this.value;
+            }
+            
+            fpsSlider = document.querySelector("#fpsRange");
+            fpsOutput = document.querySelector("#fps");
+            fpsOutput.innerHTML = fpsSlider.value;
+            fpsSlider.oninput = function() {
+                fpsOutput.innerHTML = this.value;
+                fps = this.value;
             }
             
             document.querySelector("#chooserBackgroundColor").onchange = function(e){
@@ -111,7 +95,7 @@
             
             //Add canvas click logic here
             
-            flowers.push(new Botany(mouseX, mouseY, maxIterations, colorStyle));
+            flowers.push(new Botany(mouseX, mouseY, maxIterations, colorStyle, fps, divergence, c));
             
             
         }
@@ -154,7 +138,7 @@
                     }
                 else
                     {
-                        return "green";
+                        return this.color;
                     }
             }
             
@@ -175,7 +159,7 @@
                 let color = this.getColorAlgorithm();
                 abcLIB.drawCircle(ctx,x,y,2,color);
                 
-                console.log("print " + this.n);
+                //console.log("print " + this.n);
                 this.n++;
             }
 
@@ -199,18 +183,35 @@
 </head>
 <body>
     <h1>Phyllotaxis Stamp </h1>
-    <h2>Sorry it's broken right now :D</h2>
-    <p>I will fix the spread of the botany object >_></p>
-    <section>
+    <p>Info: llorem ipsem heres some random text that tells tou how to do things. wjeimme.w efwefj wefj wefjwnef jw fj  wjfnw jwf wef  wef   ef w d f   sdf d  sdf   s df  sdf  sdf  sdf  s  s df   sdf d f s  sd f df sd f  sdf  dfd fd f s df  dsf  fd sf s sdf sd  sdf  sd f df s fsd d d df s s f ds f </p>
+    <section class="buttons">
         <button id="clearButton">Clear</button> 
         
         <button id="exportButton">Export</button>
     </section>
-    <canvas id="canvas"></canvas>
+    <div class="right-div">
+        <canvas id="canvas"></canvas>
+    </div>
+<div class="left-div">
     <div class="sliders">
        <div class="slidecontainer">
           <input type="range" min="1" max="1000" value="50" class="slider" id="maxIterationRange">
           <p>Max Iterations: <span id="maxIterations"></span></p>
+        </div>
+        
+        <div class="slidecontainer">
+          <input type="range" min="1" max="100" value="5" class="slider" id="divergenceRange">
+          <p>Divergence: <span id="divergence"></span></p>
+        </div>
+        
+        <div class="slidecontainer">
+          <input type="range" min="30" max="1000" value="120" class="slider" id="fpsRange">
+          <p>FPS: <span id="fps"></span></p>
+        </div>
+        
+        <div class="slidecontainer">
+          <input type="range" min="1" max="20" value="4" class="slider" id="cRange">
+          <p>N: <span id="c"></span></p>
         </div>
 
     </div>
@@ -227,8 +228,11 @@
       <select id="chooserColorStyle"> 
         <option value="hsl">HSL</option>
         <option value="green" selected>Green</option>
+        <option value="red">Red</option>
+        <option value="blue">Blue</option>
       </select>
     </label>
+    </div>
     </div>
 
 </body>
