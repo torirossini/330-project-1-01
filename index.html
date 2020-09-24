@@ -3,21 +3,54 @@
 <html lang="en">
 <head>
 	<meta charset="utf-8" />
-	<title>Botany</title>
+	<title>Phyllotaxis Stamp</title>
     <link rel="stylesheet" href="styles/default-styles.css">
     <script src="src/abcLIB.js"></script>
 	<script src="src/index.js"></script>
 </head>
 <body>
     <h1>Phyllotaxis Stamp </h1>
-    <p>Info: llorem ipsem heres some random text that tells tou how to do things. wjeimme.w efwefj wefj wefjwnef jw fj  wjfnw jwf wef  wef   ef w d f   sdf d  sdf   s df  sdf  sdf  sdf  s  s df   sdf d f s  sd f df sd f  sdf  dfd fd f s df  dsf  fd sf s sdf sd  sdf  sd f df s fsd d d df s s f ds f </p>
+    <p>Controls:</p>
+    <ul>
+        <li>
+            Click on the canvas to stamp using the settings on the left.
+        </li>
+        <li>
+            Change any stamp settings on the left sliders and dropdowns. 
+        </li>
+        <li>
+            Use the clear button to remove all stamps from the canvas
+        </li>
+        <li>
+            Export the canvas to a new window using the Export button
+        </li>
+        <li>
+            Reset all settings to default with the reset button
+        </li>
+    </ul>
+
     <section class="buttons">
         <button id="clearButton">Clear</button> 
         
         <button id="exportButton">Export</button>
+        
+        <button id="resetButton">Reset Settings</button>
     </section>
     <div class="right-div">
         <canvas id="canvas"></canvas>
+        
+         <div class="labelcontainer">
+        <label>Presets: 
+          <select id="chooserPresets"> 
+            <option value="default" selected>Default</option>
+            <option value="spokes">Spokes</option>
+            <option value="whirlpool">Whirlpool</option>
+            <option value="spots">Spot Fill</option>
+            <option value="firework">Firework</option>
+
+          </select>
+        </label>
+    </div>
     </div>
 <div class="left-div">
     <div class="sliders">
@@ -43,24 +76,32 @@
 
     </div>
     <div class="presets">
-    <label>Background Color: 
-      <select id="chooserBackgroundColor"> 
-        <option value="red">Red</option>
-        <option value="black" selected>Black</option>
-        <option value="blue">Blue</option>
-      </select>
-    </label>
+     <div class="labelcontainer">
+        <label>Background Color: 
+          <select id="chooserBackgroundColor"> 
+            <option value="red">Red</option>
+            <option value="green">Green</option>
+            <option value="blue">Blue</option>
+            <option value="black" selected>Black</option>
+            <option value="white">White</option>
+
+          </select>
+        </label>
+    </div>
         
-        <br>
-        
-    <label>Color Style: 
-      <select id="chooserColorStyle"> 
-        <option value="hsl">HSL</option>
-        <option value="green" selected>Green</option>
-        <option value="red">Red</option>
-        <option value="blue">Blue</option>
-      </select>
-    </label>
+    <div class="labelcontainer">
+        <label>Color Style: 
+          <select id="chooserColorStyle"> 
+            <option value="hsl" selected >HSL</option>
+            <option value="green">Green</option>
+            <option value="red">Red</option>
+            <option value="blue">Blue</option>
+            <option value="white">White</option>
+            <option value="black">Black</option>
+
+          </select>
+        </label>
+    </div>
     </div>
     </div>
 
