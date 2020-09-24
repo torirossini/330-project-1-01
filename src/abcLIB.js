@@ -1,7 +1,4 @@
 (function(){
-    function doStuff(){
-        console.log("meh");
-    }
     
     function dtr(degrees){
             return degrees * (Math.PI/180);
@@ -18,7 +15,6 @@
     }
     
     const abcLIB = {
-        doStuff:doStuff,
         dtr:dtr,
         drawCircle:drawCircle
     };

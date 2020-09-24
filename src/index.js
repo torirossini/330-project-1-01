@@ -19,6 +19,15 @@
         window.onload = init;
         
         function init(){
+            
+            //Canvas setup
+            ctx = canvas.getContext("2d");
+            canvas.width = canvasWidth;
+            canvas.height = canvasHeight;
+            
+            ctx.fillRect(0,0,canvasWidth,canvasHeight);
+            
+            //Control Setup
             document.querySelector("#exportButton").onclick = doExport;
             
             document.querySelector("#clearButton").onclick = clear;
@@ -26,13 +35,6 @@
             document.querySelector("#resetButton").onclick = function(){
                 setAll([50, 5, 120, 4, "black", "hsl"]);
             };
-            
-            ctx = canvas.getContext("2d");
-            canvas.width = canvasWidth;
-            canvas.height = canvasHeight;
-            
-            ctx.fillRect(0,0,canvasWidth,canvasHeight);
-            
             
             maxIterationSlider = document.querySelector("#maxIterationRange");
             maxIterationOutput = document.querySelector("#maxIterations");
@@ -108,6 +110,7 @@
             canvas.onclick = canvasClicked;
 		}
 
+        //Exports current canvas to new window
         function doExport(){
           // https://developer.mozilla.org/en-US/docs/Web/API/HTMLCanvasElement/toDataURL
           // https://www.w3schools.com/jsref/met_win_open.asp
@@ -116,6 +119,7 @@
           newWindow.document.body.innerHTML = `<iframe src="${data}" frameborder="0" style="border:0; top:0px; left:0px; bottom:0px; right:0px; width:100%; height:100%;" allowfullscreen></iframe>`;
         }
 
+        //Clears canvas
         function clear(){
             ctx.save();
             ctx.fillStyle = backgroundColor;
@@ -123,6 +127,7 @@
             ctx.restore();
         }
 
+        //Sets all sliders to specific values
         function setAll(setArray)
         {
             console.log("Setting values to: " + setArray[0] + "  " + setArray[1] + "  " + setArray[2] + "  " + setArray[3] + "  " + setArray[4] + "  " + setArray[5]);
@@ -146,20 +151,20 @@
             
         }
 
+        //Handles creating new Botany object where canvas was clicked
         function canvasClicked(e){
             let rect = e.target.getBoundingClientRect();
             let mouseX = e.clientX - rect.x;
             let mouseY = e.clientY - rect.y;
             console.log(mouseX,mouseY);
-            
-            
-            //Add canvas click logic here
+        
             
             flowers.push(new Botany(mouseX, mouseY, maxIterations, colorStyle, fps, divergence, c));
             
             
         }
         
+    // Updates background color
         function updateBackground(color)
         {
             ctx.save();
@@ -168,6 +173,7 @@
             ctx.restore();
         }
         
+        //Used to get Mouse position
         function getMousePos(canvas, evt) {
             var rect = canvas.getBoundingClientRect();
             return {
@@ -176,6 +182,7 @@
             };
           }
 
+        //Botany object, used to save settings for each stamp and have an independant instance of each stamop
         class Botany{
             constructor(x,y,maxInterations = 100, color = "hsl", fps = 120, divergence = 5, c = 4){
                 this.x = Number(x);
@@ -224,7 +231,8 @@
             }
 
     }
-        
+    
+    //Loops through all botany object and uses their maxIteration values to determine when to stop looping them.    
     function loop(){
 
         for(var i = 0; i < flowers.length; i++)
